@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace ProjectDelorean.Interfaces
 {
-    class IdentiferHistory
+    public interface IRecieveCommand
     {
+        void FormatUserInput();
+
+        bool isCommandValid();
+        void runCommand();
     }
 }

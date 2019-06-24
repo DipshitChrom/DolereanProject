@@ -11,35 +11,29 @@ namespace ProjectDelorean
     {
         static void Main(string[] args)
         {
-            string userinput;
-            string[] splituserinput;
-            string command;
-            int id;
-            int timestamp;
-            double data;
-            TemporalStorage temporalStorage = new TemporalStorage();
-
-
+            Dictionary<int, HistoryTree> tempstore = new Dictionary<int, HistoryTree>();
+            TempStoreExeceptionMessage displayexceptionMessage = new TempStoreExeceptionMessage();
             Console.WriteLine("Enter a command for the temporal storage");
-            userinput = Console.ReadLine();
-
+            string userinput = Console.ReadLine();
+            
             while (!userinput.Contains("QUIT"))
             {
-                splituserinput = userinput.Split();
+                RecieveCommand newcommand = new RecieveCommand(userinput);
 
-                command = splituserinput[0];
-                id = Convert.ToInt32(splituserinput[1]);
-                timestamp = Convert.ToInt32(splituserinput[2]);
-                data = Convert.ToDouble(splituserinput[3]);
-
-                
-                if (command.Equals("CREATE"))
+                if (newcommand.isCommandValid() == false)
                 {
-                    temporalStorage.CREATETimestamp(id, timestamp, data);
-                    //Use the comman
+                    displayexceptionMessage.IncorrectCommand();
+                    Console.WriteLine("Enter a command for the temporal storage");
+                    userinput = Console.ReadLine();
                 }
-                
-                //Split input here to grab command
+                else
+                {
+                    newcommand.FormatUserInput();
+                    newcommand.runCommand();
+                    Console.WriteLine("Enter a command for the temporal storage");
+                    userinput = Console.ReadLine();
+                }
+      
             }
         }
     }
