@@ -1,0 +1,13 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+*.ide-shm
+*.ide-wal
+/Project Dolerean/ProjectDelorean/bin/Debug
+/Project Dolerean/ProjectDelorean/obj/Debug
+/Project Dolerean/ProjectDelorean/packages
+/Project Dolerean/UnitTests/bin/Debug
+/Project Dolerean/UnitTests/obj/Debug
+
+*.suo
