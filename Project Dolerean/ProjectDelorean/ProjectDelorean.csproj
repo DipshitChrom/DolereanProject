@@ -43,12 +43,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes\FileDataStore.cs" />
     <Compile Include="Classes\History.cs" />
     <Compile Include="Classes\HistoryTree.cs" />
     <Compile Include="Classes\RecieveCommand.cs" />
+    <Compile Include="Classes\StoreDictionary.cs" />
     <Compile Include="Classes\TempStoreExceptionMessage.cs" />
-    <Compile Include="Interfaces\IFileDataStore.cs" />
     <Compile Include="Interfaces\IHistory.cs" />
     <Compile Include="Interfaces\ITempStoreExceptionMessage.cs" />
     <Compile Include="Interfaces\IRecieveCommand.cs" />

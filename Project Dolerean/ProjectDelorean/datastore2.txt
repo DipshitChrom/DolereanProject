@@ -1,6 +1,0 @@
-1,1,datastore
-1,12,mydatastoe
-1,17,chocolate
-1,16,chocolate
-2,150,tomato
-2,130,bread

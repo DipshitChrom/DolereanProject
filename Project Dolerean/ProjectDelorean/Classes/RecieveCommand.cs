@@ -9,19 +9,25 @@ namespace ProjectDelorean.Classes
 {
     public class RecieveCommand : IRecieveCommand
     {
+        Dictionary<int, List<HistoryTree>> tempstore;
         List<string> validcommands = new List<string> { "CREATE", "UPDATE", "GET", "LATEST", "DELETE" };
-        string originalcommand;
+        public string originalcommand { get; set; }
         string cleancommand;
         string[] formatcommand;
         int identifer;
         long timeStamp;
         string Data;
 
-        public RecieveCommand(string usercommand)
+        public RecieveCommand(string usercommand, Dictionary<int, List<HistoryTree>> temporalstorage)
         {
             originalcommand = usercommand;
+            tempstore = temporalstorage;
         }
 
+        public void NewCommand(string newcommand)
+        {
+            originalcommand = newcommand;
+        }
         public void FormatUserInput()
         {
             string data;
@@ -96,7 +102,7 @@ namespace ProjectDelorean.Classes
         public void RunCommand()
         {
 
-            History commandtoRun = new History();
+            History commandtoRun = new History(tempstore);
 
             if (cleancommand.Equals("CREATE"))
             {
@@ -119,7 +125,8 @@ namespace ProjectDelorean.Classes
 
             else if (cleancommand.Equals("DELETE"))
             {
-                commandtoRun.DeleteTimestamp(identifer);
+                commandtoRun.DeletewithIdentiferTimestamp(identifer, timeStamp);
+                
             }
         }
     }

@@ -8,39 +8,68 @@ namespace ProjectDelorean.Classes
 {
     public class TempStoreExeceptionMessage
     {
-        public void IncorrectCommand()
+        public string IncorrectCommand()
         {
-            Console.WriteLine("ERR Command does not exist in the command list");
+            String message = "Command does not exist in the command list";
+
+            Console.WriteLine(message);
+
+            return message;
         }
 
-        public void NoHistoryExists(int identifer)
+        public string NoHistoryExists(int identifer)
         {
-            Console.WriteLine("ERR No history exists for the timestamp - " + identifer);
+            string message = "ERR No history exists for the timestamp - " + identifer;
+
+            Console.WriteLine(message);
+
+            return message;
+
         }
 
-        public void HistoryAlreadyExists(int identifer)
+        public string HistoryAlreadyExists(int identifer)
         {
-            Console.WriteLine("ERR History already exists for the timestamp: " + identifer);
+            string message = "ERR History already exists for the timestamp: " + identifer;
+
+            Console.WriteLine(message);
+
+            return message;
         }
 
-        public void TimestampNotFound(long timestamp)
+        public string TimestampNotFound(long timestamp)
         {
-            Console.WriteLine("ERR the timestamp does not exist in the temporal storage: " + timestamp);
+            string message = "ERR the timestamp does not exist in the temporal storage: " + timestamp;
+
+            Console.WriteLine(message);
+
+            return message;
         }
 
-        public void DeletingNotExistingTimestamp(long timestamp)
+        public string DeletingNotExistingTimestamp(long timestamp)
         {
-            Console.WriteLine("ERR the timestamp you are trying to delete does not exist - " + timestamp);
+            string message = "ERR the timestamp you are trying to delete does not exist - " + timestamp;
+
+            Console.WriteLine(message);
+
+            return message;
         }
 
-        public void NoHistoryForLatestTimestamp(int identifer)
+        public string NoHistoryForLatestTimestamp(int identifer)
         {
-            Console.WriteLine("ERR there is no history for the identifer " + identifer);
+            string message = "ERR there is no history for the identifer " + identifer;
+
+            Console.WriteLine(message);
+
+            return message;
         }
 
-        public void CommandOnly()
+        public string CommandOnly()
         {
-            Console.WriteLine("Please enter the values along with the command");
+            string message = "Please enter the values along with the command";
+
+            Console.WriteLine(message);
+
+            return message;
         }
     }
 }

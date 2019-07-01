@@ -7,32 +7,36 @@ namespace ProjectDelorean.Classes
 {
     public class History : IHistory
     {
-        Dictionary<int, List<HistoryTree>> storedata = new Dictionary<int, List<HistoryTree>>();
+        Dictionary<int, List<HistoryTree>> storedata;
         TempStoreExeceptionMessage displayexecptionmessage = new TempStoreExeceptionMessage();
-        FileDataStore storeentry = new FileDataStore();
-
-        public void InitaliseDict()
+        StoreDictionary mydictionarystore = new StoreDictionary();
+     
+        public History(Dictionary<int, List<HistoryTree>> temporalstore)
         {
-            storedata = storeentry.InitializeDictionary();
+            storedata = temporalstore;
         }
 
-        public void CreateTimestamp(int identifer, long timestamp, string data)
+        public string CreateTimestamp(int identifer, long timestamp, string data)
         {
-            InitaliseDict();
+          
             if (storedata.ContainsKey(identifer))
             {
                 displayexecptionmessage.HistoryAlreadyExists(identifer);
                 Console.WriteLine(identifer + " " + storedata[identifer]);
-
+                return null;
             }
 
             else
             {
                 HistoryTree userentry = new HistoryTree(timestamp, data);
                 List<HistoryTree> histories = new List<HistoryTree>();
+                histories.Add(userentry);
                 storedata.Add(identifer, histories);
-                Console.WriteLine("OK " + timestamp);
-                storeentry.StoreDictionaryEntries(identifer, timestamp, data);
+                Console.WriteLine("OK " + data);
+                
+                
+
+                return data;
 
             }
 
@@ -40,21 +44,21 @@ namespace ProjectDelorean.Classes
         public string UpdateTimestamp(int identifer, long timestamp, string data)
         {
             
-            InitaliseDict();
+            //InitaliseDict();
             HistoryTree updateddata = new HistoryTree(timestamp, data);
             HistoryTree previousobservation;
-            List<HistoryTree> updatelist = new List<HistoryTree>();
+            
             if (storedata.ContainsKey(identifer))
             {
-
+                List<HistoryTree> updatelist = storedata[identifer];
                 previousobservation = storedata[identifer].Last();
-                previousobservation.PrintTimestampAndData();
+                //previousobservation.PrintTimestampAndData();
                 updatelist.Add(updateddata);
+                previousobservation.PrintData();
                 storedata[identifer] = updatelist;
                 
-                storeentry.StoreDictionaryEntries(identifer, timestamp, data);
-                Console.WriteLine("OK " + identifer);
                 return previousobservation.data;
+
             }
             else
             {
@@ -64,27 +68,46 @@ namespace ProjectDelorean.Classes
         }
 
 
-        public void DeleteTimestamp(int identifer)
+        public string DeleteTimestamp(int identifer)
         {
-
+            HistoryTree lastentry;
             if (storedata.ContainsKey(identifer))
             {
+                lastentry = storedata[identifer].Last();
+                lastentry.PrintData();
                 storedata.Remove(identifer);
-                //storeentry.StoreDictionaryEntries();
+                return lastentry.data;
             }
             else
             {
                 displayexecptionmessage.DeletingNotExistingTimestamp(identifer);
+                return null;
             }
         }
 
         public void DeletewithIdentiferTimestamp(int identifer, long timestamp)
         {
-            InitaliseDict();
+            //var minimumtimestamp = x.Min(entry => entry.Value);
+
+            HistoryTree lastentry;
+            List<HistoryTree> updatehistory;
+          
             if (storedata.ContainsKey(identifer))
             {
-                storedata.Remove(identifer);
-                //storeentry.StoreDictionaryEntries();
+                //List<HistoryTree> updatedeletedtimestamp;
+                updatehistory = storedata[identifer];
+
+                var closest = updatehistory.Select(n => new { n, timestamp = Math.Abs(n.timestamp - timestamp) })
+                    .OrderBy(n => n.timestamp)
+                    .First().n.timestamp;
+
+                updatehistory.RemoveAll(n => n.timestamp >= closest);
+
+
+
+                storedata[identifer] = updatehistory;
+
+
             }
             else
             {
@@ -95,7 +118,7 @@ namespace ProjectDelorean.Classes
         public long GrabLatestTimestamp(int identifer)
         {
             long notimestamp = 0;
-            InitaliseDict();
+            //InitaliseDict();
             HistoryTree latestvalue;
             if (storedata.ContainsKey(identifer))
             {
@@ -113,37 +136,48 @@ namespace ProjectDelorean.Classes
 
         public string GetTimestamp(int identifer, long timestamp)
         {
-            InitaliseDict();
-            string iddata = null;
-
+            //InitaliseDict();
+            HistoryTree returntimestamp;
+            List <HistoryTree> getHistory;
 
             if (storedata.ContainsKey(identifer))
             {
-                //Console.WriteLine(storedata[identifer]);
-                //return timestamp;
-                foreach (HistoryTree item in storedata[identifer])
+                getHistory = storedata[identifer];
+
+                //The lowest value in the list
+                HistoryTree LowestTimestamp = getHistory.OrderByDescending(p => p.timestamp).LastOrDefault();
+                //HistoryTree GreatestTimestamp = getHistory.OrderByDescending(x => x.timestamp).FirstOrDefault();
+
+                var closest = getHistory.Select(n => new { n, timestamp = Math.Abs(n.timestamp - timestamp) })
+                    .OrderBy(n => n.timestamp)
+                    .First().n.timestamp;
+
+                if (timestamp < LowestTimestamp.timestamp)
                 {
-                    if (timestamp == item.timestamp)
-                    {
-                        iddata = item.data;
-                        item.PrintData();
-                        return iddata;
-                    }
-                    
+                    displayexecptionmessage.TimestampNotFound(timestamp);
+                    return null;
                 }
+
+                returntimestamp = getHistory.Single(s => s.timestamp == closest);
+                returntimestamp.PrintData();
+                return returntimestamp.data;
+
+                //Remove any entries that are equal or greater than
+                
+                //if (timestamp )
+                //LowestTimestamp.PrintTimestampAndData();
+                //LowestTimestamp.PrintTimestampAndData();
+             
             }
             else
             {
                 displayexecptionmessage.TimestampNotFound(timestamp);
+                return null;
             }
 
-            return iddata;
+           
         }
 
-        //public Dictionary<int, HistoryTree> returnDictionary()
-        //{
-        //  Dictionary<int, HistoryTree> returnDict = storedata;
-        //return returnDict;
-        //}
+    
     }
 }

@@ -12,16 +12,18 @@ namespace ProjectDelorean
         static void Main(string[] args)
         {
             TempStoreExeceptionMessage displayexceptionMessage = new TempStoreExeceptionMessage();
+            StoreDictionary temporalstore = new StoreDictionary();
+            Dictionary<int, List<HistoryTree>> dictionary = new Dictionary<int, List<HistoryTree>>();
+
             Console.WriteLine("Enter a command for the temporal storage");
             string userinput = Console.ReadLine();
-            //FileDataStore test = new FileDataStore();
-
-            //test.InitializeDictionary();
+            
+            RecieveCommand newcommand = new RecieveCommand(userinput, dictionary);
+          
 
             while (!userinput.Equals("QUIT"))
             {
-                RecieveCommand newcommand = new RecieveCommand(userinput);
-
+              
                 if (newcommand.IsCommandValid() == false)
                 {
                     displayexceptionMessage.IncorrectCommand();
@@ -30,10 +32,13 @@ namespace ProjectDelorean
                 }
                 else
                 {
+                  
                     newcommand.FormatUserInput();
                     newcommand.RunCommand();
                     Console.WriteLine("Enter a command for the temporal storage");
                     userinput = Console.ReadLine();
+                    newcommand.originalcommand = userinput;
+
                 }
 
             }

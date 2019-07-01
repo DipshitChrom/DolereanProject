@@ -8,15 +8,15 @@ namespace ProjectDelorean.Interfaces
 {
     public interface ITempStoreExceptionMessage
     {
-        void IncorrectCommand();
+        string IncorrectCommand();
 
-        void NoHistoryExists(int identifer);
+        string NoHistoryExists(int identifer);
 
-        void HistoryAlreadyExists(int identifer);
+        string HistoryAlreadyExists(int identifer);
 
-        void TimestampNotFound(long timestamp);
+        string TimestampNotFound(long timestamp);
 
-        void DeletingNotExistingTimestamp(long timestamp);
+        string DeletingNotExistingTimestamp(long timestamp);
 
     }
 }
